@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevGlow - O Blog do Futuro Front-End</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&viewport=width=device-width" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           VARIÁVEIS CSS (Boas Práticas & Temas)
+           ========================================================================== */
+        :root {
+            /* Cores Sólidas */
+            --bg-main: #0a0b10;
+            --bg-card: #12131a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --border-color: rgba(255, 255, 255, 0.08);
+
+            /* Gradientes Obrigatórios */
+            --gradient-linear: linear-gradient(135deg, #ff007a 0%, #7928ca 100%);
+            --gradient-radial: radial-gradient(circle at top right, #00f2fe 0%, #4facfe 100%);
+            /* Gradiente Múltiplo (Combinação de Radiais e Linear para o fundo do Hero) */
+            --gradient-multiple: 
+                radial-gradient(circle at 10% 20%, rgba(121, 40, 202, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 242, 254, 0.1) 0%, transparent 40%),
+                linear-gradient(180deg, #0a0b10 0%, #161722 100%);
+
+            /* Transições e Efeitos */
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --shadow-glow: 0 0 30px rgba(121, 40, 202, 0.4);
+        }
+
+        /* ==========================================================================
+           RESET & ESTILOS GERAIS
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gradient-multiple);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+        }
+
+        a {
+            text-style: none;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ==========================================================================
+           HEADER (Flexbox)
+           ========================================================================== */
+        .header {
+            background: rgba(10, 11, 16, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Gradiente no Texto (background-clip) */
+        .logo {
+            font-size: 1.6rem;
+            background: var(--gradient-linear);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .nav-list {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-primary);
+        }
+
+        /* Detalhe de linha com gradiente horizontal embaixo do link ativo */
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff007a, #7928ca);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* ==========================================================================
+           HERO SECTION (Área Principal com Gradientes)
+           ========================================================================== */
+        .hero {
+            position: relative;
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* Fundo Radial Decorativo */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(121, 40, 202, 0.2) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.05);
+            /* Borda sutil com gradiente simulado por box-shadow/border */
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            color: #00f2fe;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1.5px;
+        }
+
+        .hero-title span {
+            background: var(--gradient-radial);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 2.5rem auto;
+        }
+
+        /* Botão com Gradiente que muda no Hover */
+        .btn-gradient {
+            display: inline-block;
+            padding: 1rem 2.2rem;
+            font-weight: 600;
+            border-radius: 8px;
+            background: var(--gradient-linear);
+            color: var(--text-primary);
+            position: relative;
+            z-index: 1;
+            transition: var(--transition-smooth);
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Efeito de mudança de gradiente no hover */
+        .btn-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--gradient-radial);
+            border-radius: 8px;
+            z-index: -1;
+            opacity: 0;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-gradient:hover::before {
+            opacity: 1;
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* ==========================================================================
+           POSTS EM DESTAQUE (Cards Dinâmicos - Flexbox)
+           ========================================================================== */
+        .featured {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 4px;
+            background: var(--gradient-linear);
+            border-radius: 2px;
+        }
+
+        .featured-flex {
+            display: flex;
+            gap: 2rem;
+            flex-direction: column; /* Mobile-First por padrão */
+        }
+
+        .featured-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+            flex: 1;
+            transition: var(--transition-smooth);
+            position: relative;
+        }
+
+        /* Overlay com gradiente sutil */
+        .card-img-wrapper {
+            position: relative;
+            overflow: hidden;
+            height: 240px;
+        }
+
+        .card-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition-smooth);
+        }
+
+        .card-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(18, 19, 26, 1) 0%, rgba(18, 19, 26, 0.2) 100%);
+        }
+
+        .card-content {
+            padding: 2rem;
+        }
+
+        .card-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #ff007a;
+            letter-spacing: 1px;
+            margin-bottom: 0.8rem;
+            display: inline-block;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            transition: var(--transition-smooth);
+        }
+
+        .card-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Efeitos de Hover nos Cards */
+        .featured-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(121, 40, 202, 0.4);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .featured-card:hover .card-img-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .featured-card:hover .card-title {
+            background: var(--gradient-linear);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ==========================================================================
+           LAYOUT PRINCIPAL (Grid: Recentes + Sidebar)
+           ========================================================================== */
+        .main-layout {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr; /* Mobile-First: uma coluna */
+            gap: 3rem;
+        }
+
+        /* Seção do Grid de Posts Recentes */
+        .recent-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .recent-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .recent-card img {
+            border-radius: 8px;
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .recent-card:hover {
+            border-color: rgba(0, 242, 254, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* ==========================================================================
+           SIDEBAR (Flexbox Interno)
+           ========================================================================== */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .widget {
+            background: rgba(18, 19, 26, 0.6);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+        }
+
+        .widget-title {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        /* Autor Widget */
+        .author-box {
+            text-align: center;
+        }
+
+        .author-avatar-wrapper {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 1rem auto;
+            position: relative;
+            border-radius: 50%;
+            padding: 3px; /* Espaço para a borda gradiente */
+            background: var(--gradient-linear);
+        }
+
+        .author-avatar {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--bg-card);
+        }
+
+        /* Categorias (Flexbox Tag-Cloud) */
+        .category-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            list-style: none;
+        }
+
+        .category-link {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: var(--transition-smooth);
+            border: 1px solid transparent;
+        }
+
+        .category-link:hover {
+            background: var(--bg-card);
+            border-color: rgba(121, 40, 202, 0.5);
+            color: #00f2fe;
+        }
+
+        /* Newsletter Widget */
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .newsletter-input {
+            padding: 0.8rem 1rem;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: white;
+            font-family: inherit;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: #7928ca;
+        }
+
+        /* ==========================================================================
+           FOOTER
+           ========================================================================== */
+        .footer {
+            background: #06070a;
+            border-top: 1px solid var(--border-color);
+            padding: 3rem 2rem;
+            margin-top: 6rem;
+            text-align: center;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ==========================================================================
+           MEDIA QUERIES (Responsividade - Mobile First para Desktop)
+           ========================================================================== */
+        
+        /* Tablets e Telas Médias */
+        @media (min-width: 768px) {
+            .featured-flex {
+                flex-direction: row; /* Alinha os cards lado a lado */
+            }
+
+            .recent-grid {
+                grid-template-columns: repeat(2, 1fr); /* Dois posts por linha no grid */
+            }
+
+            .recent-card {
+                flex-direction: column;
+            }
+
+            .hero-title {
+                font-size: 4.5rem;
+            }
+        }
+
+        /* Desktops e Telas Grandes */
+        @media (min-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 2fr 1fr; /* Divide o espaço: 2/3 conteúdo, 1/3 sidebar */
+            }
+
+            .recent-card {
+                flex-direction: row; /* Post recente vira horizontal no desktop */
+                align-items: center;
+            }
+
+            .recent-card img {
+                width: 200px;
+                height: 140px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">DevGlow.</a>
+            <nav class="nav-bar">
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-link active">Home</a></li>
+                    <li><a href="#" class="nav-link">Artigos</a></li>
+                    <li><a href="#" class="nav-link">Tutoriais</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <span class="hero-tag">Novidades de Tech</span>
+        <h1 class="hero-title">Expandindo os limites do <span>Front-End</span></h1>
+        <p class="hero-desc">Explore os segredos da engenharia web moderna com layouts incríveis, performance extrema e design de última geração.</p>
+        <button class="btn-gradient">Começar Leitura</button>
+    </section>
+
+    <section class="featured">
+        <h2 class="section-title">Em Destaque</h2>
+        <div class="featured-flex">
+            
+            <article class="featured-card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop" alt="Arte abstrata digital de gradientes">
+                    <div class="card-overlay"></div>
+                </div>
+                <div class="card-content">
+                    <span class="card-tag">CSS Avançado</span>
+                    <h3 class="card-title">Dominando Gradientes Complexos no CSS3</h3>
+                    <p class="card-desc">Como misturar propriedades lineares, radiais e máscaras para criar layouts imersivos de alta fidelidade visual.</p>
+                </div>
+            </article>
+
+            <article class="featured-card">
+                <div class="card-img-wrapper">
+                    <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=600&auto=format&fit=crop" alt="Formas geométricas neon tridimensionais">
+                    <div class="card-overlay"></div>
+                </div>
+                <div class="card-content">
+                    <span class="card-tag">UI/UX Design</span>
+                    <h3 class="card-title">A psicologia por trás da estética Dark Mode</h3>
+                    <p class="card-desc">Entenda os motivos técnicos e de usabilidade que levaram a indústria a adotar as interfaces escuras.</p>
+                </div>
+            </article>
+
+        </div>
+    </section>
+
+    <div class="main-layout">
+        
+        <main>
+            <h2 class="section-title">Posts Recentes</h2>
+            <div class="recent-grid">
+                
+                <article class="recent-card">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=400&auto=format&fit=crop" alt="Código em tela">
+                    <div>
+                        <span class="card-tag">Performance</span>
+                        <h3 class="card-title" style="font-size: 1.2rem; margin-bottom: 0.5rem;">Otimização de Core Web Vitals</h3>
+                        <p class="card-desc" style="font-size: 0.9rem;">Estratégias práticas para fazer seus sites carregarem em milissegundos.</p>
+                    </div>
+                </article>
+
+                <article class="recent-card">
+                    <img src="https://images.unsplash.com/photo-1504639725590-34d0984388bd?q=80&w=400&auto=format&fit=crop" alt="Desenvolvimento em notebook">
+                    <div>
+                        <span class="card-tag">JavaScript</span>
+                        <h3 class="card-title" style="font-size: 1.2rem; margin-bottom: 0.5rem;">Clean Code no ecossistema JS</h3>
+                        <p class="card-desc" style="font-size: 0.9rem;">Refatorando estruturas complexas para código legível e escalável.</p>
+                    </div>
+                </article>
+
+                <article class="recent-card">
+                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=400&auto=format&fit=crop" alt="Setup dev">
+                    <div>
+                        <span class="card-tag">Carreira</span>
+                        <h3 class="card-title" style="font-size: 1.2rem; margin-bottom: 0.5rem;">Arquitetura de Software em 2026</h3>
+                        <p class="card-desc" style="font-size: 0.9rem;">Os caminhos indispensáveis para alcançar o nível Sênior no mercado atual.</p>
+                    </div>
+                </article>
+
+            </div>
+        </main>
+
+        <aside class="sidebar">
+            
+            <div class="widget author-box">
+                <div class="author-avatar-wrapper">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop" alt="Foto da Autora" class="author-avatar">
+                </div>
+                <h3 style="margin-bottom: 0.5rem;">Elena Rostova</h3>
+                <p class="card-desc" style="font-size: 0.85rem;">Engenheira de Software e criadora de conteúdo tech obcecada por UI/UX e animações CSS CSS.</p>
+            </div>
+
+            <div class="widget">
+                <h3 class="widget-title">Categorias</h3>
+                <ul class="category-list">
+                    <li><a href="#" class="category-link">CSS Advanced</a></li>
+                    <li><a href="#" class="category-link">JavaScript</a></li>
+                    <li><a href="#" class="category-link">React</a></li>
+                    <li><a href="#" class="category-link">UI/UX</a></li>
+                    <li><a href="#" class="category-link">DevOps</a></li>
+                </ul>
+            </div>
+
+            <div class="widget">
+                <h3 class="widget-title">Fique por Dentro</h3>
+                <p class="card-desc" style="font-size: 0.85rem; margin-bottom: 1rem;">Inscreva-se para receber artigos exclusivos diretamente no seu e-mail semanalmente.</p>
+                <form class="newsletter-form" onsubmit="event.preventDefault();">
+                    <input type="email" placeholder="Seu melhor e-mail" class="newsletter-input" required>
+                    <button type="submit" class="btn-gradient" style="padding: 0.7rem;">Inscrever-se</button>
+                </form>
+            </div>
+
+        </aside>
+
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <a href="#" class="logo" style="font-size: 1.3rem;">DevGlow.</a>
+            <p class="footer-text">&copy; 2026 DevGlow Blog. Desenvolvido com técnicas de ponta de CSS Moderno.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
